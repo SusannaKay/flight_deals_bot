@@ -27,6 +27,12 @@ for city in sheet_data:
     if city['lowestPrice'] > best_flight.price:
         message = NotificationManager(best_flight)
         message.send_message()
+        customer_list = sheet.get_customer_email()
+        for email in customer_list:
+            message.send_email(email)
+
+       
+        
     
     time.sleep(2)
     
