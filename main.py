@@ -2,6 +2,7 @@
 from data_manager import DataManager
 from flight_search import FlightSearch
 from pprint import pprint
+import time
 
 sheet = DataManager()
 sheet_data = sheet.read_file() ## dictionaries list
@@ -17,6 +18,7 @@ for city in sheet_data:
     
     
     get_offer = flights.get_flights(city)
+    time.sleep(2)
     
 
         

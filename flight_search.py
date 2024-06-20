@@ -59,6 +59,7 @@ class FlightSearch:
     
     def get_flights(self, city):
         tomorrow = datetime.today() + timedelta(days=1)
+        return_date = tomorrow + timedelta(days=7)
         header_flight ={
             'Authorization': f'Bearer {self._token}'
         }
@@ -67,7 +68,7 @@ class FlightSearch:
             'originLocationCode':'ROM',
             'destinationLocationCode': city['iataCode'],
             'departureDate': tomorrow.strftime('%Y-%m-%d'),
-            
+            'returnDate': return_date.strftime('%Y-%m-%d'),
             'adults': 1,
             'nonStop': 'true',
             'currencyCode': 'EUR',
@@ -89,7 +90,7 @@ class FlightSearch:
             print(f'{city['city']}: N/A')
         else:
         
-
+            
             check = FlightData()
             best_price = check.find_chepest_flight(data)
             print(f'{city['city']}: {best_price}€')
