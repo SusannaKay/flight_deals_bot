@@ -13,24 +13,30 @@ class FlightData:
         
     
     def find_chepest_flight(self, data):
-      
         best_price = 0
+
         for flight in data:
             
-            self.price = float(flight['price']['total'])
+            ticket_price = float(flight['price']['total'])
             
-            if best_price != 0 and self.price < best_price:
-                best_price = self.price
+            if best_price != 0:
+                if ticket_price < best_price:
+                    self.price = best_price
+                    self.departure_day = flight['itineraries'][0]['segments'][0]['departure']['at'].split("T")[0]
+                    self.return_day = flight["itineraries"][1]["segments"][0]["departure"]["at"].split("T")[0]
+                    self.destination_code = flight['itineraries'][0]['segments'][0]['arrival']['iataCode']
+                    
+                
+                
+            else:
+                best_price = ticket_price
+                self.price = ticket_price
                 self.departure_day = flight['itineraries'][0]['segments'][0]['departure']['at'].split("T")[0]
                 self.return_day = flight["itineraries"][1]["segments"][0]["departure"]["at"].split("T")[0]
                 self.destination_code = flight['itineraries'][0]['segments'][0]['arrival']['iataCode']
                 
-                
-            elif best_price == 0:
-                best_price = self.price
-                
             
             
             
-        return best_price
+        return self
 

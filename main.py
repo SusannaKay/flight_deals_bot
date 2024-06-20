@@ -17,7 +17,8 @@ for city in sheet_data:
         sheet.update_file(city)
     
     
-    get_offer = flights.get_flights(city)
+    best_flight = flights.get_flights(city)
+    
     time.sleep(2)
     
 

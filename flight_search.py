@@ -92,7 +92,9 @@ class FlightSearch:
         
             
             check = FlightData()
-            best_price = check.find_chepest_flight(data)
-            print(f'{city['city']}: {best_price}€')
+            best_flight = check.find_chepest_flight(data)
+
+            print(f'{city['city']}: {best_flight.price}€')
+            return best_flight
 
        
