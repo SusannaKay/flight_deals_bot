@@ -2,9 +2,9 @@
 
 class FlightData:
     #This class is responsible for structuring the flight data.
-    def __init__(self):
+    def __init__(self, origin):
         self.price = 0
-        self.departure_code = 'ROM'
+        self.departure_code = origin
         self.destination_code = ''
         self.departure_day=''
         self.return_day=''

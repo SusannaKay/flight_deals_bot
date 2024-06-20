@@ -5,6 +5,8 @@ from notification_manager import NotificationManager
 from pprint import pprint
 import time
 
+origin = 'ROM'
+
 sheet = DataManager()
 sheet_data = sheet.read_file() ## dictionaries list
 
@@ -21,7 +23,7 @@ for city in sheet_data:
     best_flight = flights.get_flights(city, is_direct=True)
 
     if best_flight == None:
-        best_flight = flights.get_flights(city, is_direct=False)
+        best_flight = flights.get_flights(city, origin=origin, is_direct=False)
         
 
     if city['lowestPrice'] > best_flight.price:

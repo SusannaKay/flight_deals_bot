@@ -57,7 +57,7 @@ class FlightSearch:
        
         return code
     
-    def get_flights(self, city, is_direct= True):
+    def get_flights(self, city, origin, is_direct= True):
         tomorrow = datetime.today() + timedelta(days=1)
         return_date = tomorrow + timedelta(days=7)
         header_flight ={
@@ -65,7 +65,7 @@ class FlightSearch:
         }
         if is_direct:
             parameters = {
-                'originLocationCode':'ROM',
+                'originLocationCode':origin,
                 'destinationLocationCode': city['iataCode'],
                 'departureDate': tomorrow.strftime('%Y-%m-%d'),
                 'returnDate': return_date.strftime('%Y-%m-%d'),
@@ -76,7 +76,7 @@ class FlightSearch:
             }
         else:
             parameters = {
-                'originLocationCode':'ROM',
+                'originLocationCode':origin,
                 'destinationLocationCode': city['iataCode'],
                 'departureDate': tomorrow.strftime('%Y-%m-%d'),
                 'returnDate': return_date.strftime('%Y-%m-%d'),
@@ -104,7 +104,7 @@ class FlightSearch:
 
         else:
 
-            check = FlightData()
+            check = FlightData(origin)
             best_flight = check.find_chepest_flight(data)
             
             print(f'{city['city']}: {best_flight.price}€')
