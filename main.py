@@ -1,6 +1,7 @@
 #This file will need to use the DataManager,FlightSearch, FlightData, NotificationManager classes to achieve the program requirements.  
 from data_manager import DataManager
 from flight_search import FlightSearch
+from notification_manager import NotificationManager
 from pprint import pprint
 import time
 
@@ -18,7 +19,9 @@ for city in sheet_data:
     
     
     best_flight = flights.get_flights(city)
-    
+    if best_flight != None and city['lowestPrice'] > best_flight.price:
+        message = NotificationManager(best_flight)
+        message.send_message()
     time.sleep(2)
     
 
