@@ -8,6 +8,7 @@ class FlightData:
         self.destination_code = ''
         self.departure_day=''
         self.return_day=''
+        self.stop = 0
 
 
         
@@ -18,13 +19,18 @@ class FlightData:
         for flight in data:
             
             ticket_price = float(flight['price']['total'])
+            self.stop = len(flight['itineraries'][0]['segments'])
+            
             
             if best_price != 0:
                 if ticket_price < best_price:
                     self.price = best_price
                     self.departure_day = flight['itineraries'][0]['segments'][0]['departure']['at'].split("T")[0]
                     self.return_day = flight["itineraries"][1]["segments"][0]["departure"]["at"].split("T")[0]
-                    self.destination_code = flight['itineraries'][0]['segments'][0]['arrival']['iataCode']
+                    if self.stop == 1:
+                        self.destination_code = flight['itineraries'][0]['segments'][0]['arrival']['iataCode']
+                    else: 
+                        self.destination_code = flight['itineraries'][0]['segments'][1]['arrival']['iataCode']
                     
                 
                 
@@ -33,7 +39,11 @@ class FlightData:
                 self.price = ticket_price
                 self.departure_day = flight['itineraries'][0]['segments'][0]['departure']['at'].split("T")[0]
                 self.return_day = flight["itineraries"][1]["segments"][0]["departure"]["at"].split("T")[0]
-                self.destination_code = flight['itineraries'][0]['segments'][0]['arrival']['iataCode']
+                
+                if self.stop == 1:
+                    self.destination_code = flight['itineraries'][0]['segments'][0]['arrival']['iataCode']
+                else: 
+                    self.destination_code = flight['itineraries'][0]['segments'][self.stop - 1]['arrival']['iataCode']
                 
             
             

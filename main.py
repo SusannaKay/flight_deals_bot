@@ -11,17 +11,23 @@ sheet_data = sheet.read_file() ## dictionaries list
 #{'city': 'Paris', 'iataCode': '', 'id': 2, 'lowestPrice': 54}
 flights = FlightSearch()
 for city in sheet_data:
-    if city['iataCode'] == '':
-        updateIata = FlightSearch()
+    # if city['iataCode'] == '':
+    #     updateIata = FlightSearch()
 
-        city['iataCode'] = updateIata.changeIata(city)
-        sheet.update_file(city)
+    #     city['iataCode'] = updateIata.changeIata(city)
+    #     sheet.update_file(city)
     
     
-    best_flight = flights.get_flights(city)
-    if best_flight != None and city['lowestPrice'] > best_flight.price:
+    best_flight = flights.get_flights(city, is_direct=True)
+
+    if best_flight == None:
+        best_flight = flights.get_flights(city, is_direct=False)
+        
+
+    if city['lowestPrice'] > best_flight.price:
         message = NotificationManager(best_flight)
         message.send_message()
+    
     time.sleep(2)
     
 

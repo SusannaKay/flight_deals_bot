@@ -57,23 +57,35 @@ class FlightSearch:
        
         return code
     
-    def get_flights(self, city):
+    def get_flights(self, city, is_direct= True):
         tomorrow = datetime.today() + timedelta(days=1)
         return_date = tomorrow + timedelta(days=7)
         header_flight ={
             'Authorization': f'Bearer {self._token}'
         }
-        
-        parameters = {
-            'originLocationCode':'ROM',
-            'destinationLocationCode': city['iataCode'],
-            'departureDate': tomorrow.strftime('%Y-%m-%d'),
-            'returnDate': return_date.strftime('%Y-%m-%d'),
-            'adults': 1,
-            'nonStop': 'true',
-            'currencyCode': 'EUR',
-            'max':10
-        }
+        if is_direct:
+            parameters = {
+                'originLocationCode':'ROM',
+                'destinationLocationCode': city['iataCode'],
+                'departureDate': tomorrow.strftime('%Y-%m-%d'),
+                'returnDate': return_date.strftime('%Y-%m-%d'),
+                'adults': 1,
+                'nonStop': 'true',
+                'currencyCode': 'EUR',
+                'max':10
+            }
+        else:
+            parameters = {
+                'originLocationCode':'ROM',
+                'destinationLocationCode': city['iataCode'],
+                'departureDate': tomorrow.strftime('%Y-%m-%d'),
+                'returnDate': return_date.strftime('%Y-%m-%d'),
+                'adults': 1,
+                'nonStop': 'false',
+                'currencyCode': 'EUR',
+                'max':10
+            }
+
         print(f"Getting flights for {city['city']}...")
         
         response = requests.get(url=OFFERS_ENDPOINT, 
@@ -86,11 +98,12 @@ class FlightSearch:
             raise
         
         data = response.json()['data']
-        if not data:
-            print(f'{city['city']}: N/A')
-        else:
         
-            
+        if not data:
+            print(f'No direct flights to {city['city']}. Looking for 2 stop itineraries...')
+
+        else:
+
             check = FlightData()
             best_flight = check.find_chepest_flight(data)
             
